@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Quản Lý Danh Mục</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container"><a class="navbar-brand" href="/">UI/UX E-Learning Admin</a></div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="/admin/danhmuc" class="list-group-item list-group-item-action active">Quản lý Danh mục</a>
+                <a href="/admin/baihoc" class="list-group-item list-group-item-action">Quản lý Bài học</a>
+                <a href="/admin/tracnghiem" class="list-group-item list-group-item-action">Quản lý Trắc nghiệm</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div th:if="${param.success}" class="alert alert-success">Thao tác thành công!</div>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-header text-white" th:classappend="${editDm != null ? 'bg-warning text-dark' : 'bg-primary'}">
+                    <h5 class="mb-0" th:text="${editDm != null ? 'Cập Nhật Danh Mục' : 'Thêm Danh Mục Mới'}">Thêm Danh Mục Mới</h5>
+                </div>
+                <div class="card-body">
+                    <form th:action="${editDm != null ? '/admin/danhmuc/update' : '/admin/danhmuc/add'}" method="POST" class="needs-validation" novalidate>
+                        <input type="hidden" name="maDM" th:value="${editDm != null ? editDm.maDM : ''}">
+                        <div class="mb-3">
+                            <label class="form-label">Tên danh mục <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="tenDanhMuc" th:value="${editDm != null ? editDm.tenDanhMuc : ''}" required>
+                            <div class="invalid-feedback">Vui lòng nhập tên danh mục!</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Icon URL</label>
+                            <input type="text" class="form-control" name="iconURL" th:value="${editDm != null ? editDm.iconURL : ''}">
+                        </div>
+                        <button type="submit" class="btn btn-success" th:text="${editDm != null ? 'Lưu Thay Đổi' : 'Thêm Mới'}">Lưu</button>
+                        <a th:if="${editDm != null}" href="/admin/danhmuc" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Table hiển thị dữ liệu -->
+            <h4>Danh sách Danh Mục</h4>
+            <table class="table table-bordered table-hover bg-white shadow-sm">
+                <thead class="table-dark"><tr><th>ID</th><th>Tên Danh Mục</th><th>Icon URL</th><th>Thao Tác</th></tr></thead>
+                <tbody>
+                    <tr th:each="dm : ${danhMucList}">
+                        <td th:text="${dm.maDM}"></td>
+                        <td th:text="${dm.tenDanhMuc}"></td>
+                        <td th:text="${dm.iconURL}"></td>
+                        <td>
+                            <a th:href="@{/admin/danhmuc/edit/{id}(id=${dm.maDM})}" class="btn btn-sm btn-warning">Sửa</a>
+                            <a th:href="@{/admin/danhmuc/delete(id=${dm.maDM})}" class="btn btn-sm btn-danger" onclick="return confirm('Xóa danh mục này sẽ xóa luôn các bài học bên trong. Bạn có chắc không?')">Xóa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    (function () { 'use strict'; var forms = document.querySelectorAll('.needs-validation'); Array.prototype.slice.call(forms).forEach(function (form) { form.addEventListener('submit', function (event) { if (!form.checkValidity()) { event.preventDefault(); event.stopPropagation(); } form.classList.add('was-validated'); }, false); }); })();
+</script>
+</body>
+</html>

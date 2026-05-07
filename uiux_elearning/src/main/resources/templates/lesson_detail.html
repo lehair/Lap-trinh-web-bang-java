@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết bài học</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">⬅ Trở về Trang Chủ</a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Nội dung bài học -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-5">
+                    <h2 class="fw-bold text-dark mb-4">📖 <span th:text="${baiHoc != null ? baiHoc.tenBH : 'Tên Bài Học'}">Tên Bài Học</span></h2>
+                    
+                    <div class="ratio ratio-16x9 mb-4">
+                        <iframe th:src="${baiHoc != null ? baiHoc.linkURL : 'https://www.youtube.com/embed/dQw4w9WgXcQ'}" title="YouTube video" allowfullscreen></iframe>
+                    </div>
+
+                    <h4 class="fw-bold">Nội dung chi tiết</h4>
+                    <p class="text-muted" style="line-height: 1.8;" th:text="${baiHoc != null ? baiHoc.noiDungBH : 'Mô tả bài học...'}">
+                        Nội dung mô phỏng...
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar: Tài nguyên & Trắc nghiệm -->
+        <div class="col-md-4">
+            <!-- Bài tập trắc nghiệm -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-header bg-warning text-dark fw-bold text-center py-3">
+                    📝 BÀI TẬP TRẮC NGHIỆM
+                </div>
+                <div class="card-body text-center">
+                    <p class="text-muted mb-4">Hoàn thành bài kiểm tra để củng cố kiến thức bạn vừa học.</p>
+                    <a th:href="@{/baihoc/{id}/quiz(id=${baiHoc.maBH})}" class="btn btn-danger btn-lg w-100 rounded-pill fw-bold shadow">👉 BẮT ĐẦU LÀM TEST</a>
+                </div>
+            </div>
+
+            <!-- Tài nguyên tải về -->
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-info text-white fw-bold">
+                    📁 Tài Nguyên Tải Về
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Slide Bài Giảng (PDF)
+                        <span class="badge bg-primary rounded-pill">↓ Tải</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Figma Source File (.fig)
+                        <span class="badge bg-primary rounded-pill">↓ Tải</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

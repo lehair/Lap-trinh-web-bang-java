@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Làm Bài Kiểm Tra</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .quiz-card { transition: 0.3s; }
+        .quiz-card:hover { border-color: #ffc107; box-shadow: 0 5px 15px rgba(255,193,7,0.2); }
+        .correct-answer { background-color: #d4edda !important; border-color: #28a745 !important; }
+        .wrong-answer { background-color: #f8d7da !important; border-color: #dc3545 !important; }
+    </style>
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/baihoc/{id}(id=${baiHoc.maBH})}">⬅ Trở về Bài Học</a>
+        <span class="navbar-text text-white fw-bold">Bài Test: <span th:text="${baiHoc.tenBH}"></span></span>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-center fw-bold mb-4">Bài Kiểm Tra Trắc Nghiệm</h2>
+            
+            <div th:if="${#lists.isEmpty(tracNghiemList)}" class="alert alert-warning text-center">
+                Hiện tại chưa có câu hỏi trắc nghiệm nào cho bài học này.
+            </div>
+
+            <!-- Quiz Form -->
+            <form id="quizForm" th:if="${not #lists.isEmpty(tracNghiemList)}">
+                
+                <div th:each="tn, stat : ${tracNghiemList}" class="card shadow-sm mb-4 border-0 rounded-4 quiz-card" th:id="'questionCard' + ${tn.maTN}">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3" th:text="'Câu ' + ${stat.count} + ': ' + ${tn.noiDungCauHoi}">Câu hỏi</h5>
+                        
+                        <div th:each="da, daStat : ${tn.danhSachDapAn}" class="form-check mb-2 p-3 border rounded" th:id="'answerBox' + ${da.maDA}">
+                            <input class="form-check-input ms-1" type="radio" th:name="'q_' + ${tn.maTN}" th:id="'da_' + ${da.maDA}" th:value="${da.isCorrect}">
+                            <label class="form-check-label ms-2 d-block w-100" th:for="'da_' + ${da.maDA}" th:text="${da.noiDungDapAn}">
+                                Đáp án
+                            </label>
+                        </div>
+
+                        <!-- Feedback Message (Hidden by default) -->
+                        <div class="alert alert-info mt-3 d-none explanation-box" th:id="'explain' + ${tn.maTN}">
+                            <strong>💡 Giải thích: </strong><span th:text="${tn.loiGiaiThich}">Giải thích</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mb-5">
+                    <button type="button" class="btn btn-warning btn-lg px-5 fw-bold rounded-pill shadow" onclick="submitQuiz()">Nộp Bài & Xem Kết Quả</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function submitQuiz() {
+        let score = 0;
+        let total = document.querySelectorAll('.quiz-card').length;
+        
+        document.querySelectorAll('.quiz-card').forEach(card => {
+            let questionId = card.id.replace('questionCard', '');
+            let selectedOption = card.querySelector('input[type="radio"]:checked');
+            let explanationBox = card.querySelector('.explanation-box');
+            
+            // Hiện hộp thoại giải thích
+            if (explanationBox) {
+                explanationBox.classList.remove('d-none');
+            }
+
+            // Đổi màu tất cả các đáp án
+            card.querySelectorAll('.form-check').forEach(box => {
+                let radio = box.querySelector('input[type="radio"]');
+                radio.disabled = true; // Khóa không cho chọn lại
+                
+                if (radio.value === 'true') {
+                    // Hiển thị màu xanh cho đáp án đúng
+                    box.classList.add('correct-answer');
+                }
+            });
+
+            // Kiểm tra lựa chọn của user
+            if (selectedOption) {
+                if (selectedOption.value === 'true') {
+                    score++;
+                } else {
+                    // Đánh dấu đỏ cho lựa chọn sai của người dùng
+                    selectedOption.closest('.form-check').classList.add('wrong-answer');
+                }
+            }
+        });
+
+        // Hiện thông báo điểm số
+        alert('🎉 Bạn đã nộp bài xong!\n\nĐiểm của bạn: ' + score + ' / ' + total + ' câu đúng.');
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

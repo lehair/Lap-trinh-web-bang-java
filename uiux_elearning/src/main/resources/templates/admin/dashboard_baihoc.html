@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Quản Lý Bài Học</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container"><a class="navbar-brand" href="/">UI/UX E-Learning Admin</a></div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <div class="col-md-3">
+            <div class="list-group">
+                <a href="/admin/danhmuc" class="list-group-item list-group-item-action">Quản lý Danh mục</a>
+                <a href="/admin/baihoc" class="list-group-item list-group-item-action active">Quản lý Bài học</a>
+                <a href="/admin/tracnghiem" class="list-group-item list-group-item-action">Quản lý Trắc nghiệm</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div th:if="${param.success}" class="alert alert-success">Thao tác thành công!</div>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-header text-white" th:classappend="${editBh != null ? 'bg-warning text-dark' : 'bg-primary'}">
+                    <h5 class="mb-0" th:text="${editBh != null ? 'Cập Nhật Bài Học' : 'Thêm Bài Học Mới'}">Thêm Bài Học Mới</h5>
+                </div>
+                <div class="card-body">
+                    <form th:action="${editBh != null ? '/admin/baihoc/update' : '/admin/baihoc/add'}" method="POST" class="needs-validation" novalidate>
+                        <input type="hidden" name="maBH" th:value="${editBh != null ? editBh.maBH : ''}">
+                        <div class="mb-3">
+                            <label class="form-label">Tên bài học <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="tenBH" th:value="${editBh != null ? editBh.tenBH : ''}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Thuộc Danh mục (ID) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="maDM" th:value="${editBh != null ? editBh.maDM : ''}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nội dung / Mô tả</label>
+                            <textarea class="form-control" name="noiDungBH" rows="3" th:text="${editBh != null ? editBh.noiDungBH : ''}"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success" th:text="${editBh != null ? 'Lưu Thay Đổi' : 'Thêm Mới'}">Lưu</button>
+                        <a th:if="${editBh != null}" href="/admin/baihoc" class="btn btn-secondary">Hủy</a>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Table hiển thị dữ liệu -->
+            <h4>Danh sách bài học</h4>
+            <table class="table table-bordered table-hover bg-white shadow-sm">
+                <thead class="table-dark"><tr><th>ID</th><th>Tên Bài Học</th><th>DM ID</th><th>Thao Tác</th></tr></thead>
+                <tbody>
+                    <tr th:each="bh : ${baiHocList}">
+                        <td th:text="${bh.maBH}"></td>
+                        <td th:text="${bh.tenBH}"></td>
+                        <td th:text="${bh.maDM}"></td>
+                        <td>
+                            <a th:href="@{/admin/baihoc/edit/{id}(id=${bh.maBH})}" class="btn btn-sm btn-warning">Sửa</a>
+                            <a th:href="@{/admin/baihoc/delete(id=${bh.maBH})}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    (function () { 'use strict'; var forms = document.querySelectorAll('.needs-validation'); Array.prototype.slice.call(forms).forEach(function (form) { form.addEventListener('submit', function (event) { if (!form.checkValidity()) { event.preventDefault(); event.stopPropagation(); } form.classList.add('was-validated'); }, false); }); })();
+</script>
+</body>
+</html>
