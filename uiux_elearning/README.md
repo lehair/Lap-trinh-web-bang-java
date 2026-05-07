@@ -32,7 +32,7 @@
 3. Copy và dán đoạn mã sau vào file vừa tạo (nhớ thay đổi tài khoản và mật khẩu MySQL cho đúng với máy của bạn):
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/elearning_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+spring.datasource.url=jdbc:mysql://localhost:3306/elearning_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 spring.datasource.username=root
 spring.datasource.password=123456
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver

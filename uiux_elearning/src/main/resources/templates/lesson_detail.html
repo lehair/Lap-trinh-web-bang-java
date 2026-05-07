@@ -6,67 +6,128 @@
     <title>Chi tiết bài học</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        
+        /* Navbar */
+        .navbar-custom { background-color: #c9302c; padding: 12px 0; color: white; }
+        .navbar-custom a { color: white; text-decoration: none; font-weight: 500; }
+        .logo-center { font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
+        .logo-center span { color: #f39c12; }
+        
+        /* Main Card */
+        .main-card { border: none; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); background-color: #ffffff; }
+        .lesson-title { font-weight: 800; color: #212529; margin-bottom: 25px; font-size: 2rem; }
+        .video-container { border-radius: 12px; overflow: hidden; margin-bottom: 30px; position: relative; }
+        .content-title { font-weight: 800; font-size: 1.5rem; margin-bottom: 15px; color: #212529; }
+        .content-body { color: #212529; line-height: 1.7; font-size: 15px; font-weight: 400;}
+        
+        /* Sidebar Cards */
+        .quiz-card { background-color: #f6a111; color: #111; border: none; border-radius: 20px; box-shadow: 0 4px 15px rgba(246, 161, 17, 0.2); text-align: center; }
+        .quiz-card-title { font-weight: 800; font-size: 16px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; }
+        .quiz-btn { background-color: #c9302c; color: white; border: none; font-weight: 700; border-radius: 50px; padding: 12px; transition: 0.2s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .quiz-btn:hover { background-color: #a82320; color: white;}
+        
+        .resource-card { border: none; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-top: 25px; padding: 20px; background-color: #ffffff;}
+        .resource-card-title { font-weight: 800; font-size: 16px; margin-bottom: 20px; display: flex; align-items: center; color: #212529;}
+        .resource-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .resource-item:last-child { border-bottom: none; padding-bottom: 0;}
+        .resource-name { font-size: 14.5px; font-weight: 500; display: flex; align-items: center; gap: 10px; color: #212529;}
+        .btn-download { background-color: #3498db; color: white; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: 0.2s;}
+        .btn-download:hover { background-color: #2980b9; color: white;}
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/">⬅ Trở về Trang Chủ</a>
+<nav class="navbar-custom sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="/" class="d-flex align-items-center gap-2">
+            <i class="bi bi-arrow-left"></i> Trở về Trang Chủ
+        </a>
+        <div class="logo-center">
+            U<span>X</span>
+        </div>
+        <div class="d-none d-md-flex align-items-center gap-2" style="font-weight: 600;">
+            <i class="bi bi-window-desktop fs-5"></i> UI/UX Masterclass
+        </div>
     </div>
 </nav>
 
-<div class="container mt-5">
-    <div class="row">
-        <!-- Nội dung bài học -->
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0 rounded-4 mb-4">
-                <div class="card-body p-5">
-                    <h2 class="fw-bold text-dark mb-4">📖 <span th:text="${baiHoc != null ? baiHoc.tenBH : 'Tên Bài Học'}">Tên Bài Học</span></h2>
-                    
-                    <div class="ratio ratio-16x9 mb-4">
-                        <iframe th:src="${baiHoc != null ? baiHoc.linkURL : 'https://www.youtube.com/embed/dQw4w9WgXcQ'}" title="YouTube video" allowfullscreen></iframe>
+<div class="container mt-4 mb-5">
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="card main-card p-4 p-md-5">
+                <h1 class="lesson-title" th:text="${baiHoc != null ? baiHoc.tenBH : 'Nguyên Lý Gestalt Trong Thiết Kế UI'}">Nguyên Lý Gestalt Trong Thiết Kế UI</h1>
+                
+                <div class="video-container shadow-sm">
+                    <div class="ratio ratio-16x9">
+                        <iframe th:src="${baiHoc != null && baiHoc.linkURL != null && !baiHoc.linkURL.isEmpty() ? baiHoc.linkURL : 'https://www.youtube.com/embed/dQw4w9WgXcQ'}" title="Video player" allowfullscreen style="border-radius: 12px;"></iframe>
                     </div>
+                </div>
 
-                    <h4 class="fw-bold">Nội dung chi tiết</h4>
-                    <p class="text-muted" style="line-height: 1.8;" th:text="${baiHoc != null ? baiHoc.noiDungBH : 'Mô tả bài học...'}">
-                        Nội dung mô phỏng...
-                    </p>
+                <h3 class="content-title">Nội dung chi tiết</h3>
+                <div class="content-body">
+                    <!-- Real Data Render -->
+                    <div th:if="${baiHoc != null && baiHoc.noiDungBH != null}" th:utext="${baiHoc.noiDungBH}"></div>
+                    
+                    <!-- Fallback if Empty (Screenshot Parity) -->
+                    <div th:if="${baiHoc == null || baiHoc.noiDungBH == null || baiHoc.noiDungBH.isEmpty()}">
+                        <p>Tìm hiểu cách bộ não con người nhận thức hình ảnh và bố cục để thiết kế giao diện trực quan, hiệu quả hơn, và sự học cho tư thiết kế tiếng nhất thứ nhược tiến đổi mãn của bản bệ nón.</p>
+                        <p class="mb-2"><strong>Key key cún các nhận kàn dụng của Nguyên lý Gestalt trị dục:</strong></p>
+                        <ul class="mb-0">
+                            <li><strong>Proximity:</strong> Bộ om mọi ngàn thẳng đoạn nhận tu nguyên lý Gestalt.</li>
+                            <li><strong>Similarity:</strong> Hình mỉ các hình ảnh và bố cục để học tiếp thỉnh hàng similarity.</li>
+                            <li><strong>Closure:</strong> Nguyên lý Gestalt trong để trực thần hiên thư tiếp Gestalt.</li>
+                            <li><strong>Continuity:</strong> Nguyên lý Gestalt trong thiết kế UI và ở hơn trong continuity.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Sidebar: Tài nguyên & Trắc nghiệm -->
-        <div class="col-md-4">
-            <!-- Bài tập trắc nghiệm -->
-            <div class="card shadow-sm border-0 rounded-4 mb-4">
-                <div class="card-header bg-warning text-dark fw-bold text-center py-3">
-                    📝 BÀI TẬP TRẮC NGHIỆM
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Trắc Nghiệm -->
+            <div class="card quiz-card p-4 p-md-4">
+                <div class="quiz-card-title">
+                    <i class="bi bi-clipboard-check me-2 fs-5"></i> BÀI TẬP TRẮC NGHIỆM
                 </div>
-                <div class="card-body text-center">
-                    <p class="text-muted mb-4">Hoàn thành bài kiểm tra để củng cố kiến thức bạn vừa học.</p>
-                    <a th:href="@{/baihoc/{id}/quiz(id=${baiHoc.maBH})}" class="btn btn-danger btn-lg w-100 rounded-pill fw-bold shadow">👉 BẮT ĐẦU LÀM TEST</a>
-                </div>
+                <p style="font-size: 14.5px; font-weight: 500; margin-bottom: 25px;">Hoàn thành bài kiểm tra để củng cố kiến thức bạn vừa học.</p>
+                <a th:href="@{/baihoc/{id}/quiz(id=${baiHoc != null ? baiHoc.maBH : 1})}" class="btn quiz-btn shadow-sm">
+                    <i class="bi bi-star-fill"></i> BẮT ĐẦU LÀM TEST
+                </a>
             </div>
 
-            <!-- Tài nguyên tải về -->
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-header bg-info text-white fw-bold">
-                    📁 Tài Nguyên Tải Về
+            <!-- Tài Nguyên -->
+            <div class="card resource-card">
+                <div class="resource-card-title">
+                    <i class="bi bi-folder2-open text-primary me-2 fs-5"></i> Tài Nguyên Tải Về
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Slide Bài Giảng (PDF)
-                        <span class="badge bg-primary rounded-pill">↓ Tải</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Figma Source File (.fig)
-                        <span class="badge bg-primary rounded-pill">↓ Tải</span>
-                    </li>
-                </ul>
+                <div class="resource-list">
+                    <div class="resource-item">
+                        <div class="resource-name">
+                            <i class="bi bi-filetype-pdf text-danger fs-4"></i> Slide Bài Giảng (PDF)
+                        </div>
+                        <a href="#" class="btn-download"><i class="bi bi-download"></i> Download</a>
+                    </div>
+                    <div class="resource-item">
+                        <div class="resource-name">
+                            <i class="bi bi-vector-pen fs-4" style="color:#f24e1e;"></i> Figma Source File (.fig)
+                        </div>
+                        <a href="#" class="btn-download"><i class="bi bi-download"></i> Download</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

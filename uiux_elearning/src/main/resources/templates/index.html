@@ -1,96 +1,436 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UI/UX E-Learning Platform</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .hero-section {
-            background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
-            color: #fff;
-            padding: 80px 0;
-            text-align: center;
-            border-bottom-left-radius: 50px;
-            border-bottom-right-radius: 50px;
-            margin-bottom: 40px;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafbfc;
         }
-        .hero-section h1 { font-weight: 800; font-size: 3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        .hero-section p { font-size: 1.2rem; font-weight: 500; }
-        .course-card:hover { transform: translateY(-5px); transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .badge-dm { background-color: #E63946; }
+
+        /* Navbar Styling */
+        .navbar {
+            padding: 1rem 0;
+            background-color: #ffffff !important;
+        }
+
+        .nav-link {
+            font-size: 15px;
+            color: #555 !important;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #111 !important;
+            font-weight: 600;
+        }
+
+        .user-icon {
+            background-color: #f1f3f5;
+            border-radius: 50%;
+            padding: 6px;
+            width: 36px;
+            height: 36px;
+            color: #555;
+            font-size: 18px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section Styling */
+        .hero-section {
+            background: linear-gradient(90deg, #f9ab1c 0%, #fa6639 100%);
+            border-radius: 28px;
+            padding: 60px 50px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(250, 102, 57, 0.15);
+        }
+
+        .hero-title {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .hero-btn {
+            background-color: #fff;
+            color: #fa6639;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 12px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+            border: none;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            color: #e55c31;
+        }
+
+        .hero-img-container {
+            position: relative;
+        }
+
+        .hero-img {
+            max-height: 250px;
+            filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            margin-top: 40px;
+        }
+
+        /* Category Card */
+        .category-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid #f2f2f2;
+            transition: 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+            border-color: #eee;
+        }
+
+        .icon-container {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .category-title {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #212529;
+            margin: 0;
+        }
+
+        /* Course Card */
+        .course-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #f2f2f2;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            transition: 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .course-img {
+            height: 160px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .course-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .course-desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+
+        .course-btn {
+            background-color: #db3a34;
+            color: #fff;
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 7px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: auto;
+            align-self: flex-start;
+            transition: 0.2s;
+        }
+
+        .course-btn:hover {
+            background-color: #c0312d;
+            color: #fff;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 50px;
+            color: #555;
+            font-size: 12px;
+            background-color: #ffffff;
+            border-top: 1px solid #eaeaea;
+            font-weight: 500;
+        }
     </style>
 </head>
-<body class="bg-light">
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold text-danger" href="/">🎨 UI/UX Masterclass</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto fw-semibold">
-                <li class="nav-item"><a class="nav-link active" href="/">Trang chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="#courses">Các Khóa Học</a></li>
-                <li class="nav-item"><a class="nav-link btn btn-danger text-white px-4 ms-3" href="/admin/baihoc">Vào Admin</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<body>
 
-<!-- Hero Section -->
-<div class="hero-section shadow">
-    <div class="container">
-        <h1>Trở thành Chuyên gia UI/UX</h1>
-        <p class="mt-3">Nền tảng học tập trực tuyến hàng đầu về thiết kế trải nghiệm người dùng</p>
-        <a href="#courses" class="btn btn-light btn-lg mt-3 fw-bold text-danger rounded-pill px-5 shadow">Bắt đầu học ngay</a>
-    </div>
-</div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container d-flex align-items-center">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center me-auto" href="/">
+                <div class="position-relative me-2" style="display:flex; align-items:center;">
+                    <span style="font-size: 32px; font-weight: 900; color: #23284f; line-height: 1;">U<span
+                            style="color: #f69420;">X</span></span>
+                    <i class="bi bi-pencil-fill position-absolute"
+                        style="color: #f69420; font-size: 12px; right: -5px; bottom: 5px; transform: rotate(-45deg);"></i>
+                </div>
+                <div style="line-height: 1.2; margin-left: 6px;">
+                    <div class="fw-bold" style="font-size: 14px; color: #23284f;">UI/UX</div>
+                    <div class="fw-bold" style="font-size: 14px; color: #23284f;">Masterclass</div>
+                </div>
+            </a>
 
-<div class="container" id="courses">
-    <!-- Danh Mục Section -->
-    <h3 class="fw-bold mb-4 border-start border-danger border-4 ps-3">Danh Mục Học Tập</h3>
-    <div class="row mb-5">
-        <div class="col-md-3 mb-3" th:each="dm : ${danhMucList}">
-            <div class="card border-0 shadow-sm course-card bg-white text-center p-3 rounded-4">
-                <h5 class="fw-bold text-dark mt-2" th:text="${dm.tenDanhMuc}">Typography</h5>
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menu Links and Icons -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center gap-2">
+                    <li class="nav-item me-3"><a class="nav-link active" href="/">Trang chủ</a></li>
+                    <li class="nav-item me-4"><a class="nav-link" href="#courses">Các Khóa Học</a></li>
+
+                    <li class="nav-item me-2 d-none d-lg-block">
+                        <a href="#" class="text-secondary" style="font-size: 16px;"><i class="bi bi-search"></i></a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center user-icon" href="#"
+                            id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-fill"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2"
+                            aria-labelledby="navbarDropdown" style="border-radius: 8px;">
+                            <li><a class="dropdown-item" href="/admin/baihoc">Vào Admin</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div th:if="${#lists.isEmpty(danhMucList)}" class="col-12">
-            <p class="text-muted">Chưa có danh mục nào. (Vui lòng vào Admin để thêm)</p>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container">
+        <div class="hero-section">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-12 z-1 text-center text-lg-start">
+                    <h1 class="hero-title">Trở thành Chuyên gia UI/UX</h1>
+                    <p class="hero-desc">Nền tảng học tập trực tuyến hàng đầu về thiết kế trải nghiệm người dùng</p>
+                    <a href="#courses" class="hero-btn">Bắt đầu học ngay</a>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <!-- Bài Học Section -->
-    <h3 class="fw-bold mb-4 border-start border-warning border-4 ps-3">Các Bài Học Mới Nhất</h3>
-    <div class="row">
-        <div class="col-md-4 mb-4" th:each="bh : ${baiHocList}">
-            <div class="card h-100 shadow-sm border-0 course-card rounded-4 overflow-hidden">
-                <img th:src="${bh.hinhAnh != null ? bh.hinhAnh : 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80'}" class="card-img-top" alt="Course Image" style="height: 200px; object-fit: cover;">
-                <div class="card-body d-flex flex-column">
-                    <span class="badge badge-dm mb-2 w-25" th:text="'DM ID: ' + ${bh.maDM}">DM ID</span>
-                    <h5 class="card-title fw-bold" th:text="${bh.tenBH}">Nguyên Lý Gestalt</h5>
-                    <p class="card-text text-muted text-truncate" th:text="${bh.noiDungBH}">Nội dung mô tả ngắn...</p>
-                    <a th:href="@{/baihoc/{id}(id=${bh.maBH})}" class="btn btn-outline-danger mt-auto rounded-pill fw-bold">Vào Bài Học</a>
+    <div class="container mb-5" id="courses">
+
+        <!-- Danh Mục Học Tập -->
+        <h3 class="section-title">Danh Mục Học Tập</h3>
+        <div class="row g-3 g-md-4 mb-5">
+            <!-- Render từ Database nếu có -->
+            <div class="col-6 col-md-3" th:each="dm : ${danhMucList}">
+                <a th:href="@{'#courses'}" class="text-decoration-none text-dark d-block h-100">
+                    <div class="category-card">
+                        <div class="icon-container">
+                            <i th:class="${dm.iconURL != null && !dm.iconURL.isEmpty() ? dm.iconURL : 'bi bi-laptop text-dark'}"
+                                style="font-size: 18px;"></i>
+                        </div>
+                        <h5 class="category-title" th:text="${dm.tenDanhMuc}">Danh Mục</h5>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Fake Data giống ảnh Screenshot nếu DB trống -->
+            <th:block th:if="${#lists.isEmpty(danhMucList)}">
+                <div class="col-6 col-md-3">
+                    <div class="category-card">
+                        <div class="icon-container"><span style="font-weight: 800; font-size: 12px;">UVX</span></div>
+                        <h5 class="category-title">UI/UX Fundamentals</h5>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="category-card">
+                        <div class="icon-container"><i class="bi bi-hexagon-fill"
+                                style="color:#f24e1e; font-size: 18px;"></i></div>
+                        <h5 class="category-title">Figma Masterclass</h5>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="category-card">
+                        <div class="icon-container"><i class="bi bi-code-slash text-dark" style="font-size: 18px;"></i>
+                        </div>
+                        <h5 class="category-title">Web Design Principles</h5>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="category-card">
+                        <div class="icon-container"><i class="bi bi-search text-dark" style="font-size: 18px;"></i>
+                        </div>
+                        <h5 class="category-title">User Research (UX)</h5>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+
+        <!-- Các Bài Học Mới Nhất -->
+        <h3 class="section-title">Các Bài Học Mới Nhất</h3>
+        <div class="row g-3 g-md-4">
+            <!-- Render từ Database nếu có -->
+            <div class="col-12 col-sm-6 col-lg-3" th:each="bh : ${baiHocList}">
+                <div class="course-card">
+                    <img th:src="${bh.hinhAnh != null && !bh.hinhAnh.isEmpty() ? bh.hinhAnh : 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80'}"
+                        class="course-img" alt="Course Image">
+                    <div class="course-content">
+                        <h5 class="course-title" th:text="${bh.tenBH}">Tên Bài Học</h5>
+                        <p class="course-desc" th:text="${bh.noiDungBH}">Mô tả ngắn về bài học...</p>
+                        <a th:href="@{/baihoc/{id}(id=${bh.maBH})}" class="course-btn">Vào Bài Học</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div th:if="${#lists.isEmpty(baiHocList)}" class="col-12">
-            <p class="text-muted">Chưa có bài học nào. (Vui lòng vào Admin để thêm)</p>
+
+            <th:block th:if="${#lists.isEmpty(baiHocList)}">
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="course-card">
+                        <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=500&q=80"
+                            class="course-img" alt="Course">
+                        <div class="course-content">
+                            <h5 class="course-title">Nguyên Lý Gestalt Trong Thiết Kế UI</h5>
+                            <p class="course-desc">Nguyên Lý Gestalt Trong Thiết Kế UI vatirilt sẽ trải nghiệm người
+                                dùng...</p>
+                            <a href="#" class="course-btn">Vào Bài Học</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="course-card">
+                        <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2?w=500&q=80"
+                            class="course-img" alt="Course">
+                        <div class="course-content">
+                            <h5 class="course-title">Typography Trong Web Design</h5>
+                            <p class="course-desc">Typography Trong Web Design ia congra-amny nao xm minvndrqme llam...
+                            </p>
+                            <a href="#" class="course-btn">Vào Bài Học</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="course-card">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&q=80"
+                            class="course-img" alt="Course">
+                        <div class="course-content">
+                            <h5 class="course-title">Nguyên Lý Geslit Trong Thiết Kế UI</h5>
+                            <p class="course-desc">Lorem ipsum dolor sit amet, aburt conzenly untittruilt od turamdong
+                                dis...</p>
+                            <a href="#" class="course-btn">Vào Bài Học</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="course-card">
+                        <img src="https://images.unsplash.com/photo-1507238692062-71017b2bfa91?w=500&q=80"
+                            class="course-img" alt="Course">
+                        <div class="course-content">
+                            <h5 class="course-title">Typography Trong Web Trinh Design</h5>
+                            <p class="course-desc">Typography Trong Web Design is nol thiettv sbe ieameu bin issen.
+                                Trone...</p>
+                            <a href="#" class="course-btn">Vào Bài Học</a>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
         </div>
     </div>
-</div>
 
-<!-- Footer -->
-<footer class="bg-dark text-white text-center py-4 mt-5">
-    <div class="container">
-        <p class="mb-0">&copy; 2026 UI/UX E-Learning Platform. Built with Spring Boot & Bootstrap 5.</p>
-    </div>
-</footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 UI/UX E-Learning Platform. Built with Spring Boot & Bootstrap 5.</p>
+        </div>
+    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
